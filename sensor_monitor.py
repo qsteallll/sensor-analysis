@@ -72,3 +72,26 @@ def load_readings(filename):
         raise ValueError("The CSV file contains no readings.")
 
     return np.array(readings)
+
+def plot_readings(readings, threshold, sensor_type):
+    sample_number = np.arange(1, len(readings) + 1)
+
+    plt.figure(figsize=(10, 4))
+    plt.plot(sample_number, readings, marker="o", label="Readings")
+    plt.axhline(threshold, linestyle="--", label="Alert threshold")
+    plt.xlabel("Sample number")
+    plt.ylabel("Sensor value")
+    plt.title(f"{sensor_type} sensor readings")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+
+
+def plot_histogram(readings, sensor_type):
+    plt.figure(figsize=(8, 4))
+    plt.hist(readings, bins=10, edgecolor="black")
+    plt.xlabel("Sensor value")
+    plt.ylabel("Frequency")
+    plt.title(f"Distribution of {sensor_type} readings")
+    plt.grid(axis="y")
+    plt.tight_layout()

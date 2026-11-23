@@ -30,3 +30,22 @@ def generate_readings(count, minimum, maximum):
         readings.append(value)
 
     return np.array(readings)
+
+def calculate_statistics(readings):
+    print("\nNumber of readings:", len(readings))
+    print(f"Mean: {np.mean(readings):.2f}")
+    print(f"Minimum: {np.min(readings):.2f}")
+    print(f"Maximum: {np.max(readings):.2f}")
+    print(f"Standard deviation: {np.std(readings):.2f}")
+
+def find_outliers(readings, threshold):
+    high_readings = readings[readings > threshold]
+
+    print("Alert threshold:", threshold)
+    print("Number of readings above threshold:", len(high_readings))
+    print("Values above threshold:")
+
+    for value in high_readings:
+        print(f"{value:.2f}")
+
+    return high_readings

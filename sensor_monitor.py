@@ -20,3 +20,13 @@ def get_user_input():
 
     threshold = float(input("Enter alert threshold: "))
     return sensor_type, count, minimum, maximum, threshold
+
+def generate_readings(count, minimum, maximum):
+    random.seed(7)
+    readings = []
+
+    for _ in range(count):
+        value = random.uniform(minimum, maximum)
+        readings.append(value)
+
+    return np.array(readings)

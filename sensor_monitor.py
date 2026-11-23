@@ -26,7 +26,7 @@ def generate_readings(count, minimum, maximum):
     readings = []
 
     for _ in range(count):
-        value = random.uniform(minimum, maximum)
+        value = round(random.uniform(minimum, maximum), 2)
         readings.append(value)
 
     return np.array(readings)
@@ -95,3 +95,47 @@ def plot_histogram(readings, sensor_type):
     plt.title(f"Distribution of {sensor_type} readings")
     plt.grid(axis="y")
     plt.tight_layout()
+
+def main():
+    while True:
+        try:
+            choice = input("Enter 1 to generate or 2 to load CSV: ").strip()
+
+            if choice == "1":
+                sensor_type, count, minimum, maximum, threshold = get_user_input()
+                readings = generate_readings(count, minimum, maximum)
+                save_readings("readings.csv", readings)
+                print("Readings saved to readings.csv")
+
+            elif choice == "2":
+                sensor_type = input("Enter sensor type: ").strip()
+                if sensor_type == "":
+                    raise ValueError("Sensor type cannot be empty.")
+
+                threshold = float(input("Enter alert threshold: "))
+                filename = input("CSV filename to load: ").strip()
+                readings = load_readings(filename)
+
+            else:
+                raise ValueError("Please enter 1 or 2.")
+
+            break
+
+        except ValueError as error:
+            print("Invalid input or CSV value:", error)
+
+        except OSError as error:
+            print("Could not access the CSV file:", error)
+
+        except KeyError:
+            print("The CSV must contain a column named 'reading'.")
+
+    calculate_statistics(readings)
+    find_outliers(readings, threshold)
+    plot_readings(readings, threshold, sensor_type)
+    plot_histogram(readings, sensor_type)
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

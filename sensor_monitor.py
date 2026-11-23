@@ -49,3 +49,26 @@ def find_outliers(readings, threshold):
         print(f"{value:.2f}")
 
     return high_readings
+
+def save_readings(filename, readings):
+    with open(filename, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow(["sample", "reading"])
+
+        for sample_number, value in enumerate(readings, start=1):
+            writer.writerow([sample_number, value])
+
+
+def load_readings(filename):
+    readings = []
+
+    with open(filename, "r", newline="", encoding="utf-8") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            readings.append(float(row["reading"]))
+
+    if len(readings) == 0:
+        raise ValueError("The CSV file contains no readings.")
+
+    return np.array(readings)
